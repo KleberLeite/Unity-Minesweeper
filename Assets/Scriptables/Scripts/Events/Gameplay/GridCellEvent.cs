@@ -1,8 +1,7 @@
-using Minesweeper.Gameplay;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Minesweeper.Events
+namespace Minesweeper.Gameplay.Events
 {
     public class GridCellEvent : MonoBehaviour
     {

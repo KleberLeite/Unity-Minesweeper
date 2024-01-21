@@ -1,33 +1,35 @@
-using Minesweeper.Gameplay;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Databases/Gameplay/GridCellArt")]
-public class GridCellArtDatabase : ScriptableObject
+namespace Minesweeper.Gameplay.Databases
 {
-    [Header("Settings")]
-    [SerializeField] private Color[] cellColors;
-    [SerializeField] private Color backgroundColor;
-    [SerializeField] private Sprite flagSprite;
-    [SerializeField] private Sprite bombSprite;
-    [SerializeField] private Sprite[] othersContentSprites;
-
-    public Color GetBlockColor(Vector2Int gridPos)
+    [CreateAssetMenu(menuName = "Databases/Gameplay/GridCellArt")]
+    public class GridCellArtDatabase : ScriptableObject
     {
-        int sum = gridPos.x + gridPos.y;
-        int colorIndex = sum % 2 == 0 ? 0 : 1;
+        [Header("Settings")]
+        [SerializeField] private Color[] cellColors;
+        [SerializeField] private Color backgroundColor;
+        [SerializeField] private Sprite flagSprite;
+        [SerializeField] private Sprite bombSprite;
+        [SerializeField] private Sprite[] othersContentSprites;
 
-        return cellColors[colorIndex];
-    }
+        public Color GetBlockColor(Vector2Int gridPos)
+        {
+            int sum = gridPos.x + gridPos.y;
+            int colorIndex = sum % 2 == 0 ? 0 : 1;
 
-    public Color GetBackgroundColor() => backgroundColor;
+            return cellColors[colorIndex];
+        }
 
-    public Sprite GetFlagSprite() => flagSprite;
+        public Color GetBackgroundColor() => backgroundColor;
 
-    public Sprite GetContentSprite(int value)
-    {
-        if (value == GameplayConsts.BOMB_CELL_VALUE)
-            return bombSprite;
+        public Sprite GetFlagSprite() => flagSprite;
 
-        return othersContentSprites[value];
+        public Sprite GetContentSprite(int value)
+        {
+            if (value == GameplayConsts.BOMB_CELL_VALUE)
+                return bombSprite;
+
+            return othersContentSprites[value];
+        }
     }
 }
