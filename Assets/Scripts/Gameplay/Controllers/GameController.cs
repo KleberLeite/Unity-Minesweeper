@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Minesweeper.Events;
 using Minesweeper.Gameplay.Events;
 using UnityEngine;
@@ -92,7 +91,6 @@ namespace Minesweeper.Gameplay
             cellsToAnalyse.Enqueue(firstCell);
 
             List<GridCell> cellsToOpen = new List<GridCell>();
-            int i = 0;
             while (cellsToAnalyse.Count > 0)
             {
                 GridCell cell = cellsToAnalyse.Dequeue();
@@ -104,13 +102,6 @@ namespace Minesweeper.Gameplay
                 {
                     cellsToOpen.Add(cell);
                     GetNeighbours(cell.GridPos).ForEach(cellsToAnalyse.Enqueue);
-                }
-
-                i++;
-                if (i > 900)
-                {
-                    Debug.Log("GameController: ForceToBreak");
-                    break;
                 }
             }
 
