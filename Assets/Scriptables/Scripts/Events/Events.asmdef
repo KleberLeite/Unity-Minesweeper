@@ -1,10 +1,7 @@
 {
-    "name": "Gameplay",
-    "rootNamespace": "Minesweeper.Gameplay",
-    "references": [
-        "GUID:6055be8ebefd69e48b49212b09b47b2f",
-        "GUID:f706a975aa4ed6a4ba03c7d3ed1e9f66"
-    ],
+    "name": "Events",
+    "rootNamespace": "Minesweeper.Events",
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

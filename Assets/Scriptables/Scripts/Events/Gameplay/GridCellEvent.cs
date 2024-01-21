@@ -3,7 +3,8 @@ using UnityEngine.Events;
 
 namespace Minesweeper.Gameplay.Events
 {
-    public class GridCellEvent : MonoBehaviour
+    [CreateAssetMenu(menuName = "Events/Gameplay/GridCell")]
+    public class GridCellEvent : ScriptableObject
     {
         public UnityAction<GridCell> OnEvent;
         public void Raise(GridCell value) => OnEvent?.Invoke(value);

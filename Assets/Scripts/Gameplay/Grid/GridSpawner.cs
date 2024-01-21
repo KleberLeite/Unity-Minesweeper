@@ -9,12 +9,12 @@ namespace Minesweeper.Gameplay
         [SerializeField] private GridLayoutGroup gridLayoutGroup;
         [SerializeField] private GridCell cellPrefab;
 
-        public void SpawnGrid(Grid grid)
+        public GridCell[,] SpawnGrid(Grid grid)
         {
             RectTransform gridTransform = gridLayoutGroup.GetComponent<RectTransform>();
 
             SetupGridLayoutGroup(grid, gridTransform);
-            SpawnCells(grid, gridTransform);
+            return SpawnCells(grid, gridTransform);
         }
 
         private void SetupGridLayoutGroup(Grid grid, RectTransform gridTransform)
@@ -32,8 +32,10 @@ namespace Minesweeper.Gameplay
             return Mathf.Min(cellSizeByWidth, cellSizeByHeight);
         }
 
-        private void SpawnCells(Grid grid, RectTransform gridTransform)
+        private GridCell[,] SpawnCells(Grid grid, RectTransform gridTransform)
         {
+            GridCell[,] cells = new GridCell[grid.Collumns, grid.Rows];
+
             for (int x = 0; x < grid.Collumns; x++)
             {
                 for (int y = 0; y < grid.Rows; y++)
@@ -44,8 +46,12 @@ namespace Minesweeper.Gameplay
                     Vector2Int gridPos = new Vector2Int(x, y);
                     int value = grid.GetCellValue(x, y);
                     newCell.Init(gridPos, value);
+
+                    cells[x, y] = newCell;
                 }
             }
+
+            return cells;
         }
     }
 }

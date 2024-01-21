@@ -302,6 +302,7 @@ MonoBehaviour:
   backgroundImg: {fileID: 4822599565054826743}
   flagImg: {fileID: 312417753452711580}
   artDatabase: {fileID: 11400000, guid: 7a8f7320fc3a03e4791f56657ff0617f, type: 2}
+  onClick: {fileID: 11400000, guid: daede2c1e3492a84cb86460e14cd2fb2, type: 2}
 --- !u!1 &9001828042794479518
 GameObject:
   m_ObjectHideFlags: 0

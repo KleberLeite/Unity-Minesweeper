@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Minesweeper.Gameplay.Databases;
+using Minesweeper.Gameplay.Events;
 
 namespace Minesweeper.Gameplay
 {
@@ -13,6 +14,9 @@ namespace Minesweeper.Gameplay
         [SerializeField] private Image backgroundImg;
         [SerializeField] private Image flagImg;
         [SerializeField] private GridCellArtDatabase artDatabase;
+
+        [Header("Events")]
+        [SerializeField] private GridCellEvent onClick;
 
         public bool Flagged { get; private set; }
         public bool Opened { get; private set; }
@@ -26,6 +30,7 @@ namespace Minesweeper.Gameplay
         public void Init(Vector2Int gridPos, int value)
         {
             GridPos = gridPos;
+            Value = value;
 
             SetupArt(gridPos, value);
         }
@@ -69,7 +74,7 @@ namespace Minesweeper.Gameplay
             if (pressedTime >= GameplayConsts.TIME_PRESSING_TO_ADD_FLAG && !Opened)
                 SwitchFlagState();
             else if (!Flagged && !Opened)
-                Debug.Log($"GridCell ({GridPos.x}, {GridPos.y}): RequestOpen");
+                onClick.Raise(this);
         }
 
         private void SwitchFlagState()
