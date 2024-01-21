@@ -41,7 +41,9 @@ namespace Minesweeper.Gameplay
                     GridCell newCell = Instantiate(cellPrefab, gridTransform);
                     newCell.gameObject.name = $"--- GridCell ({x}, {y}) ---";
 
-                    newCell.Init(grid.GetCellValue(x, y));
+                    Vector2Int gridPos = new Vector2Int(x, y);
+                    int value = grid.GetCellValue(x, y);
+                    newCell.Init(gridPos, value);
                 }
             }
         }
