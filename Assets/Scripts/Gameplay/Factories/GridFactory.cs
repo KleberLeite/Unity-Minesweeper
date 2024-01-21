@@ -18,7 +18,7 @@ namespace Minesweeper.Gameplay
             List<Vector2Int> bombsPos = InsertBombsInRandomPositions(ref cellsValue, rows, collumns, bombsCount);
             IncrementValueInNeighboursBombCells(ref cellsValue, rows, collumns, bombsPos);
 
-            return new Grid(rows, collumns, cellsValue);
+            return new Grid(rows, collumns, cellsValue, bombsPos.ToArray());
         }
 
         private static List<Vector2Int> InsertBombsInRandomPositions(

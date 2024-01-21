@@ -72,14 +72,17 @@ namespace Minesweeper.Gameplay
         {
             if (cell.IsBomb)
             {
-                HandleGameOver();
+                HandleGameOver(cell);
                 return;
             }
 
             if (firstClick && cell.Value == GameplayConsts.EMPTY_CELL_VALUE)
                 OpenAllNeighboursEmpty(cell);
             else
+            {
                 cell.Open();
+                firstClick = false;
+            }
         }
 
         private void OpenAllNeighboursEmpty(GridCell firstCell)
@@ -135,10 +138,14 @@ namespace Minesweeper.Gameplay
             return neighbours;
         }
 
-        private void HandleGameOver()
+        private void HandleGameOver(GridCell cell)
         {
-            Debug.Log("GameController: GameOver");
-
+            cell.Open();
+            for (int i = 0; i < grid.BombsPos.Length; i++)
+            {
+                if (grid.BombsPos[i] != cell.GridPos)
+                    cells[grid.BombsPos[i].x, grid.BombsPos[i].y].Open();
+            }
         }
     }
 }
