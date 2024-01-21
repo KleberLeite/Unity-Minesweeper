@@ -1,0 +1,16 @@
+{
+    "name": "Events",
+    "rootNamespace": "Minesweeper.Events",
+    "references": [
+        "GUID:7b6e92adc1c664f4eb436a1325cda06f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
