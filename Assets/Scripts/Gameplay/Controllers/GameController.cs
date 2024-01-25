@@ -63,12 +63,13 @@ namespace Minesweeper.Gameplay
 
             firstClick = true;
 
-            startGame.Raise();
             ChangeGameState(GameState.Playing);
         }
 
         private void OnClickCell(GridCell cell)
         {
+            startGame.Raise();
+
             if (cell.IsBomb)
             {
                 HandleGameOver(cell);
