@@ -17,6 +17,7 @@ namespace Minesweeper.Gameplay
 
         [Header("Events")]
         [SerializeField] private GridCellEvent onClick;
+        [SerializeField] private GridCellEvent onRequestSwitchFlagState;
 
         public bool Flagged { get; private set; }
         public bool Opened { get; private set; }
@@ -56,7 +57,7 @@ namespace Minesweeper.Gameplay
 
             if (eventData.button == PointerEventData.InputButton.Right && !Opened)
             {
-                SwitchFlagState();
+                onRequestSwitchFlagState.Raise(this);
                 return;
             }
 
@@ -72,12 +73,12 @@ namespace Minesweeper.Gameplay
             pressing = false;
 
             if (pressedTime >= GameplayConsts.TIME_PRESSING_TO_ADD_FLAG && !Opened)
-                SwitchFlagState();
+                onRequestSwitchFlagState.Raise(this);
             else if (!Flagged && !Opened)
                 onClick.Raise(this);
         }
 
-        private void SwitchFlagState()
+        public void SwitchFlagState()
         {
             Flagged = !Flagged;
             flagImg.gameObject.SetActive(Flagged);

@@ -17,6 +17,7 @@ namespace Minesweeper.Gameplay
 
         [Header("Events")]
         [SerializeField] private GridCellEvent onClickCell;
+        [SerializeField] private GridCellEvent onRequestSwitchFlagState;
         [SerializeField] private VoidEvent startGame;
 
         private enum GameState
@@ -34,11 +35,13 @@ namespace Minesweeper.Gameplay
         private void OnEnable()
         {
             onClickCell.OnEvent += OnClickCell;
+            onRequestSwitchFlagState.OnEvent += OnRequestSwitchFlagState;
         }
 
         private void OnDisable()
         {
             onClickCell.OnEvent -= OnClickCell;
+            onRequestSwitchFlagState.OnEvent -= OnRequestSwitchFlagState;
         }
 
         private void Start()
@@ -135,6 +138,11 @@ namespace Minesweeper.Gameplay
             }
 
             return neighbours;
+        }
+
+        private void OnRequestSwitchFlagState(GridCell cell)
+        {
+            cell.SwitchFlagState();
         }
 
         private void HandleGameOver(GridCell cell)
