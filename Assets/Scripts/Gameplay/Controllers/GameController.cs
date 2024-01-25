@@ -99,11 +99,12 @@ namespace Minesweeper.Gameplay
                     continue;
 
                 analysedCells.Add(cell);
-                if (cell.Value == GameplayConsts.EMPTY_CELL_VALUE)
-                {
+
+                if (cell.Value != GameplayConsts.BOMB_CELL_VALUE)
                     cellsToOpen.Add(cell);
+
+                if (cell.Value == GameplayConsts.EMPTY_CELL_VALUE)
                     GetNeighbours(cell.GridPos).ForEach(cellsToAnalyse.Enqueue);
-                }
             }
 
             foreach (GridCell cell in cellsToOpen)
@@ -115,17 +116,23 @@ namespace Minesweeper.Gameplay
         private List<GridCell> GetNeighbours(Vector2Int targetPos)
         {
             List<GridCell> neighbours = new List<GridCell>();
-            if (targetPos.x + 1 < grid.Collumns)
-                neighbours.Add(cells[targetPos.x + 1, targetPos.y]);
+            for (int x = targetPos.x - 1; x < grid.Collumns; x++)
+            {
+                if (x < 0)
+                    continue;
 
-            if (targetPos.y + 1 < grid.Rows)
-                neighbours.Add(cells[targetPos.x, targetPos.y + 1]);
+                for (int y = targetPos.y - 1; y < grid.Rows; y++)
+                {
+                    if (y < 0)
+                        continue;
 
-            if (targetPos.x - 1 >= 0)
-                neighbours.Add(cells[targetPos.x - 1, targetPos.y]);
+                    // Ignore target pos
+                    if (x == targetPos.x && y == targetPos.y)
+                        continue;
 
-            if (targetPos.y - 1 >= 0)
-                neighbours.Add(cells[targetPos.x, targetPos.y - 1]);
+                    neighbours.Add(cells[x, y]);
+                }
+            }
 
             return neighbours;
         }
