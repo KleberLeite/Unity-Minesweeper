@@ -1,19 +1,19 @@
 using System.Collections.Generic;
+using Minesweeper.Common;
+using Minesweeper.Databases;
 using Minesweeper.Events;
 using Minesweeper.Gameplay.Events;
+using Minesweeper.PlayerPrefs;
 using UnityEngine;
 
 namespace Minesweeper.Gameplay
 {
     public class GameController : MonoBehaviour
     {
-        // Warning: temporary while not implement Level system
-        [Header("DEV Settings")]
-        [SerializeField] private Vector2Int gridDimensions;
-        [SerializeField] private int bombsCount;
-
         [Header("Settings")]
         [SerializeField] private GridSpawner gridSpawner;
+        [SerializeField] private Database levelDatabase;
+        [SerializeField] private IntPlayerPref levelPlayerPref;
 
         [Header("Events")]
         [SerializeField] private GridCellEvent onClickCell;
@@ -61,7 +61,8 @@ namespace Minesweeper.Gameplay
 
         private void PrepareGame()
         {
-            grid = GridFactory.CreateNewGrid(gridDimensions.x, gridDimensions.y, bombsCount);
+            Level level = (Level)levelDatabase.GetDataByID(levelPlayerPref.Get());
+            grid = GridFactory.CreateNewGrid(level.Collumns, level.Rows, level.BombsCount);
             cells = gridSpawner.SpawnGrid(grid);
 
             firstClick = true;
