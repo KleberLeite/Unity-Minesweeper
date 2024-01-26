@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a13173e41df937469ec0d0669bc781a, type: 3}
-  m_Name: Hard
+  m_Script: {fileID: 11500000, guid: 9edec8ee5b4fb9c43bb1a958974f0fec, type: 3}
+  m_Name: LevelPlayerPref
   m_EditorClassIdentifier: 
-  _name: Hard
-  gridDimensions: {x: 12, y: 20}
-  bombsCount: 20
+  key: 
+  defaultValue: 0
