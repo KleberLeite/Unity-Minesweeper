@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using Minesweeper.Gameplay.Databases;
+using Minesweeper.Databases;
 using Minesweeper.Gameplay.Events;
+using Minesweeper.PlayerPrefs;
 
 namespace Minesweeper.Gameplay
 {
@@ -13,7 +14,8 @@ namespace Minesweeper.Gameplay
         [SerializeField] private Image contentImg;
         [SerializeField] private Image backgroundImg;
         [SerializeField] private Image flagImg;
-        [SerializeField] private GridCellArtDatabase artDatabase;
+        [SerializeField] private Database artDatabase;
+        [SerializeField] private IntPlayerPref artIDPlayerPref;
 
         [Header("Events")]
         [SerializeField] private GridCellEvent onClick;
@@ -38,10 +40,11 @@ namespace Minesweeper.Gameplay
 
         private void SetupArt(Vector2Int gridPos, int value)
         {
-            flagImg.sprite = artDatabase.GetFlagSprite();
-            blockImg.color = artDatabase.GetBlockColor(gridPos);
-            backgroundImg.color = artDatabase.GetBackgroundColor();
-            contentImg.sprite = artDatabase.GetContentSprite(value);
+            Theme theme = (Theme)artDatabase.GetDataByID(artIDPlayerPref.Get());
+            flagImg.sprite = theme.GetFlagSprite();
+            blockImg.color = theme.GetBlockColor(gridPos);
+            backgroundImg.color = theme.GetBackgroundColor();
+            contentImg.sprite = theme.GetContentSprite(value);
         }
 
         private void Update()
