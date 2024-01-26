@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Minesweeper.Databases
@@ -30,5 +28,7 @@ namespace Minesweeper.Databases
 
             return datas[index];
         }
+
+        public Data[] GetAll() => datas;
     }
 }
