@@ -62,7 +62,7 @@ namespace Minesweeper.Gameplay
         private void PrepareGame()
         {
             Level level = (Level)levelDatabase.GetDataByID(levelPlayerPref.Get());
-            grid = GridFactory.CreateNewGrid(level.Collumns, level.Rows, level.BombsCount);
+            grid = GridFactory.CreateNewGrid(level.Rows, level.Collumns, level.BombsCount);
             cells = gridSpawner.SpawnGrid(grid);
 
             firstClick = true;
