@@ -6,6 +6,8 @@ using Minesweeper.Gameplay.Events;
 using Minesweeper.PlayerPrefs;
 using Minesweeper.Consts;
 using UnityEngine;
+using System.Collections;
+using UnityEngine.SceneManagement;
 
 namespace Minesweeper.Gameplay
 {
@@ -15,6 +17,7 @@ namespace Minesweeper.Gameplay
         [SerializeField] private GridSpawner gridSpawner;
         [SerializeField] private Database levelDatabase;
         [SerializeField] private IntPlayerPref levelPlayerPref;
+        [SerializeField] private float timeToReplayAfterWin;
 
         [Header("Events")]
         [SerializeField] private GridCellEvent onClickCell;
@@ -33,6 +36,8 @@ namespace Minesweeper.Gameplay
         private GridCell[,] cells;
 
         private bool started;
+
+        private int remainingCellsToOpenCount;
 
         private void OnEnable()
         {
@@ -66,6 +71,7 @@ namespace Minesweeper.Gameplay
             Level level = (Level)levelDatabase.GetDataByID(levelPlayerPref.Get());
             grid = GridFactory.CreateNewGrid(level.Rows, level.Collumns, level.BombsCount);
             cells = gridSpawner.SpawnGrid(grid);
+            remainingCellsToOpenCount = level.Rows * level.Collumns - level.BombsCount;
 
             started = false;
 
@@ -89,7 +95,13 @@ namespace Minesweeper.Gameplay
             if (cell.Value == GameplayConsts.EMPTY_CELL_VALUE)
                 OpenAllNeighboursEmpty(cell);
             else
+            {
+                remainingCellsToOpenCount--;
                 cell.Open();
+            }
+
+            if (remainingCellsToOpenCount == 0)
+                StartCoroutine(HandleGameWinCoroutine());
         }
 
         private void OpenAllNeighboursEmpty(GridCell firstCell)
@@ -115,7 +127,10 @@ namespace Minesweeper.Gameplay
             }
 
             foreach (GridCell cell in cellsToOpen)
+            {
+                remainingCellsToOpenCount--;
                 cell.Open();
+            }
         }
 
         private List<GridCell> GetNeighbours(Vector2Int targetPos)
@@ -163,6 +178,13 @@ namespace Minesweeper.Gameplay
             }
 
             endGame.Raise();
+        }
+
+        private IEnumerator HandleGameWinCoroutine()
+        {
+            Debug.Log("GameController: Player wins");
+            yield return new WaitForSeconds(timeToReplayAfterWin);
+            SceneManager.LoadScene(GlobalConsts.GAMEPLAY_SCENE_INDEX);
         }
     }
 }
