@@ -841,9 +841,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2abf1a48b1d5be94983ee599e4a9407d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridDimensions: {x: 16, y: 12}
-  bombsCount: 20
   gridSpawner: {fileID: 315882157}
+  levelDatabase: {fileID: 11400000, guid: 931c8e069065f284593beaebfd2a9ee5, type: 2}
+  levelPlayerPref: {fileID: 11400000, guid: 05abdbee21dc1eb4aa1e532785125bc7, type: 2}
   onClickCell: {fileID: 11400000, guid: daede2c1e3492a84cb86460e14cd2fb2, type: 2}
   onRequestSwitchFlagState: {fileID: 11400000, guid: 33e7008a5e49df34d919aa4b784f8a4d, type: 2}
   startGame: {fileID: 11400000, guid: 8db8cccae35c98443be91e14097d2eec, type: 2}
