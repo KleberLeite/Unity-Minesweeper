@@ -10,9 +10,6 @@ namespace Minesweeper.Common
         [SerializeField] private string _name;
         [SerializeField] private Vector2Int gridDimensions;
         [SerializeField] private int bombsCount;
-        [SerializeField] private int orderIndex;
-
-        public int OrderIndex => orderIndex;
 
         public string LevelName => _name;
         public int Collumns => gridDimensions.x;

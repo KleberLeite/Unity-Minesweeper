@@ -17,7 +17,7 @@ namespace Minesweeper.UI
 
         private void Awake()
         {
-            Level[] levels = levelsDatabase.GetAll().Cast<Level>().OrderBy(l => l.OrderIndex).ToArray();
+            Level[] levels = levelsDatabase.GetAll().Cast<Level>().OrderBy(l => l.ID).ToArray();
             SetDropdownOptionsByLevels(levels);
 
             levelsDropdown.SetValueWithoutNotify(levelPlayerPref.Get());
