@@ -37,6 +37,7 @@ namespace Minesweeper.Gameplay
         private GridCell[,] cells;
 
         private bool started;
+        private bool firstClick;
 
         private int remainingCellsToOpenCount;
 
@@ -74,15 +75,17 @@ namespace Minesweeper.Gameplay
             remainingCellsToOpenCount = level.Rows * level.Collumns - level.BombsCount;
 
             started = false;
+            firstClick = true;
 
             ChangeGameState(GameState.Playing);
         }
 
         private void OnClickCell(GridCell cell)
         {
-            if (!started)
+            if (firstClick)
             {
                 started = true;
+                firstClick = false;
 
                 grid = GridFactory.CreateNewGrid(level.Rows, level.Collumns, level.BombsCount, cell.GridPos);
                 SetValuesOnCells();
