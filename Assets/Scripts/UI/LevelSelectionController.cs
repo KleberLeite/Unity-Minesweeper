@@ -5,6 +5,8 @@ using Minesweeper.Databases;
 using Minesweeper.PlayerPrefs;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Minesweeper.Consts;
 
 namespace Minesweeper.UI
 {
@@ -34,6 +36,7 @@ namespace Minesweeper.UI
         private void OnSelectLevel(int value)
         {
             levelPlayerPref.Set(value);
+            SceneManager.LoadScene(GlobalConsts.GAMEPLAY_SCENE_INDEX);
         }
     }
 }
