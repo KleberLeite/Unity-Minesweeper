@@ -1,5 +1,6 @@
 using UnityEngine;
 using Minesweeper.Databases;
+using Minesweeper.Consts;
 
 namespace Minesweeper.Gameplay
 {

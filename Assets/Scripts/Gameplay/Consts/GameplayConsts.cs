@@ -1,5 +1,5 @@
 
-namespace Minesweeper.Gameplay
+namespace Minesweeper.Consts
 {
     public static class GameplayConsts
     {

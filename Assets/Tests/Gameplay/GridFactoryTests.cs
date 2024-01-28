@@ -4,6 +4,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using Gameplay = Minesweeper.Gameplay;
+using Minesweeper.Consts;
 
 public class GridFactoryTests
 {
