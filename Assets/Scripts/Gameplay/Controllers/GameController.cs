@@ -117,6 +117,9 @@ namespace Minesweeper.Gameplay
                 if (analysedCells.Contains(cell))
                     continue;
 
+                if (cell.Flagged || cell.Opened)
+                    continue;
+
                 analysedCells.Add(cell);
 
                 if (cell.Value != GameplayConsts.BOMB_CELL_VALUE)
