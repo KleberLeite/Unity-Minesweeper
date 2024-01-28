@@ -1,4 +1,7 @@
+using Minesweeper.Common;
+using Minesweeper.Databases;
 using Minesweeper.Gameplay.Events;
+using Minesweeper.PlayerPrefs;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,6 +11,8 @@ namespace Minesweeper.Gameplay
     {
         [Header("Events")]
         [SerializeField] private GridCellEvent onRequestSwitchFlagState;
+        [SerializeField] private IntPlayerPref levelPlayerPref;
+        [SerializeField] private Database levelsDatabase;
 
         public UnityAction<int> OnCountChanged;
 
@@ -21,6 +26,13 @@ namespace Minesweeper.Gameplay
         private void OnDisable()
         {
             onRequestSwitchFlagState.OnEvent -= OnRequestSwitchFlagState;
+        }
+
+        private void Awake()
+        {
+            Level level = (Level)levelsDatabase.GetDataByID(levelPlayerPref.Get());
+            current = level.BombsCount;
+            OnCountChanged.Invoke(current);
         }
 
         private void OnRequestSwitchFlagState(GridCell cell)

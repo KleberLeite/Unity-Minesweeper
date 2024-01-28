@@ -1247,6 +1247,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onRequestSwitchFlagState: {fileID: 11400000, guid: 33e7008a5e49df34d919aa4b784f8a4d, type: 2}
+  levelPlayerPref: {fileID: 11400000, guid: 05abdbee21dc1eb4aa1e532785125bc7, type: 2}
+  levelsDatabase: {fileID: 11400000, guid: 931c8e069065f284593beaebfd2a9ee5, type: 2}
 --- !u!1 &1127999384
 GameObject:
   m_ObjectHideFlags: 0
