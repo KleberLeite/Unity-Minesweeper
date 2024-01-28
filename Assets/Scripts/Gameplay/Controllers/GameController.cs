@@ -31,7 +31,7 @@ namespace Minesweeper.Gameplay
         private Grid grid;
         private GridCell[,] cells;
 
-        private bool firstClick;
+        private bool started;
 
         private void OnEnable()
         {
@@ -66,14 +66,18 @@ namespace Minesweeper.Gameplay
             grid = GridFactory.CreateNewGrid(level.Rows, level.Collumns, level.BombsCount);
             cells = gridSpawner.SpawnGrid(grid);
 
-            firstClick = true;
+            started = false;
 
             ChangeGameState(GameState.Playing);
         }
 
         private void OnClickCell(GridCell cell)
         {
-            startGame.Raise();
+            if (!started)
+            {
+                started = true;
+                startGame.Raise();
+            }
 
             if (cell.IsBomb)
             {
@@ -81,13 +85,10 @@ namespace Minesweeper.Gameplay
                 return;
             }
 
-            if (firstClick && cell.Value == GameplayConsts.EMPTY_CELL_VALUE)
+            if (cell.Value == GameplayConsts.EMPTY_CELL_VALUE)
                 OpenAllNeighboursEmpty(cell);
             else
-            {
                 cell.Open();
-                firstClick = false;
-            }
         }
 
         private void OpenAllNeighboursEmpty(GridCell firstCell)
@@ -114,8 +115,6 @@ namespace Minesweeper.Gameplay
 
             foreach (GridCell cell in cellsToOpen)
                 cell.Open();
-
-            firstClick = false;
         }
 
         private List<GridCell> GetNeighbours(Vector2Int targetPos)
@@ -144,6 +143,12 @@ namespace Minesweeper.Gameplay
 
         private void OnRequestSwitchFlagState(GridCell cell)
         {
+            if (!started)
+            {
+                started = true;
+                startGame.Raise();
+            }
+
             cell.SwitchFlagState();
         }
 
