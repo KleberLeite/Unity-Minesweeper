@@ -20,6 +20,7 @@ namespace Minesweeper.Gameplay
         [SerializeField] private GridCellEvent onClickCell;
         [SerializeField] private GridCellEvent onRequestSwitchFlagState;
         [SerializeField] private VoidEvent startGame;
+        [SerializeField] private VoidEvent endGame;
 
         private enum GameState
         {
@@ -160,6 +161,8 @@ namespace Minesweeper.Gameplay
                 if (grid.BombsPos[i] != cell.GridPos)
                     cells[grid.BombsPos[i].x, grid.BombsPos[i].y].Open();
             }
+
+            endGame.Raise();
         }
     }
 }
