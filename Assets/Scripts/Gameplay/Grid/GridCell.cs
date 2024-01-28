@@ -27,6 +27,7 @@ namespace Minesweeper.Gameplay
         public Vector2Int GridPos { get; private set; }
         public int Value { get; private set; }
         public bool IsBomb => Value == GameplayConsts.BOMB_CELL_VALUE;
+        public bool IsEmpty => Value == GameplayConsts.EMPTY_CELL_VALUE;
 
         private bool pressing;
         private float pressedTime;

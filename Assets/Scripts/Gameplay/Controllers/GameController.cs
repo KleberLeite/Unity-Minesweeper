@@ -92,7 +92,7 @@ namespace Minesweeper.Gameplay
                 return;
             }
 
-            if (cell.Value == GameplayConsts.EMPTY_CELL_VALUE)
+            if (cell.IsEmpty)
                 OpenAllNeighboursEmpty(cell);
             else
             {
@@ -122,10 +122,10 @@ namespace Minesweeper.Gameplay
 
                 analysedCells.Add(cell);
 
-                if (cell.Value != GameplayConsts.BOMB_CELL_VALUE)
+                if (!cell.IsBomb)
                     cellsToOpen.Add(cell);
 
-                if (cell.Value == GameplayConsts.EMPTY_CELL_VALUE)
+                if (cell.IsEmpty)
                     GetNeighbours(cell.GridPos).ForEach(cellsToAnalyse.Enqueue);
             }
 
