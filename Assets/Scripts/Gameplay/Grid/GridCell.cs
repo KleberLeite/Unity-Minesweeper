@@ -32,20 +32,31 @@ namespace Minesweeper.Gameplay
         private bool pressing;
         private float pressedTime;
 
-        public void Init(Vector2Int gridPos, int value)
+        public void Init(Vector2Int gridPos)
         {
             GridPos = gridPos;
-            Value = value;
 
-            SetupArt(gridPos, value);
+            SetupArt(gridPos);
         }
 
-        private void SetupArt(Vector2Int gridPos, int value)
+        public void SetValue(int value)
+        {
+            Value = value;
+
+            SetContentSprite(value);
+        }
+
+        private void SetupArt(Vector2Int gridPos)
         {
             Theme theme = (Theme)artDatabase.GetDataByID(artIDPlayerPref.Get());
             flagImg.sprite = theme.GetFlagSprite();
             blockImg.color = theme.GetBlockColor(gridPos);
             backgroundImg.color = theme.GetBackgroundColor();
+        }
+
+        private void SetContentSprite(int value)
+        {
+            Theme theme = (Theme)artDatabase.GetDataByID(artIDPlayerPref.Get());
             contentImg.sprite = theme.GetContentSprite(value);
         }
 

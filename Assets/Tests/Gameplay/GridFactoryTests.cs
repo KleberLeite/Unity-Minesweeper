@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using Gameplay = Minesweeper.Gameplay;
 using Minesweeper.Consts;
+using Minesweeper.Common;
 
 public class GridFactoryTests
 {
@@ -22,48 +23,104 @@ public class GridFactoryTests
         }
     }
 
-    // A Test behaves as an ordinary method
-    [Test]
-    public void GenerateNewGrid()
+    [TestCase(2, 2, 2, 2, false)]
+    [TestCase(3, 3, 2, 2, false)]
+    [TestCase(1, 1, 2, 2, false)]
+    [TestCase(1, 2, 2, 2, false)]
+    [TestCase(2, 3, 2, 2, false)]
+    [TestCase(3, 1, 2, 2, false)]
+    [TestCase(1, 2, 2, 2, false)]
+    [TestCase(4, 4, 2, 2, true)]
+    [TestCase(3, 5, 2, 2, true)]
+    [TestCase(2, 4, 2, 2, true)]
+    [TestCase(2, 0, 2, 2, true)]
+    [TestCase(3, 0, 2, 2, true)]
+    [TestCase(1, 0, 2, 2, true)]
+    [TestCase(1, 4, 2, 2, true)]
+    [TestCase(3, 4, 2, 2, true)]
+    public void CanSetBomb(int bombPosX, int bombPosY, int clickedPosX, int clickedPosY, bool expected)
     {
-        TestInput[] inputs = new TestInput[]
-        {
-            new TestInput(10, 10, 3),
-            new TestInput(15, 15, 5),
-            new TestInput(15, 15, 7),
-            new TestInput(7, 7, 5),
-            new TestInput(10, 10, 10),
-        };
-        foreach (TestInput input in inputs)
-        {
-            Gameplay.Grid result = GridFactory.CreateNewGrid(input.Rows, input.Collumns, input.BombsCount);
+        Vector2Int bombPos = new Vector2Int(bombPosX, bombPosY);
+        Vector2Int clickedPos = new Vector2Int(clickedPosX, clickedPosY);
+        bool inHorizontalSpace = bombPos.x >= clickedPos.x - 1 && bombPos.x <= clickedPos.x + 1;
+        bool inVerticalSpace = bombPos.y >= clickedPos.y - 1 && bombPos.y <= clickedPos.y + 1;
 
-            int bombsCount = 0;
-            for (int x = 0; x < input.Collumns; x++)
+        bool result = !(inHorizontalSpace && inVerticalSpace);
+        Assert.AreEqual(expected, result);
+    }
+
+    // ERRO AQ
+    // Easy
+    [TestCase(8, 16, 12, 4, 6)]
+    [TestCase(8, 16, 12, 3, 4)]
+    [TestCase(8, 16, 12, 7, 7)]
+    [TestCase(8, 16, 12, 8, 3)]
+    [TestCase(8, 16, 12, 1, 8)]
+    [TestCase(8, 16, 12, 0, 0)]
+    [TestCase(8, 16, 12, 8, 16)]
+    // Medium
+    [TestCase(10, 18, 16, 4, 6)]
+    [TestCase(10, 18, 16, 3, 4)]
+    [TestCase(10, 18, 16, 7, 7)]
+    [TestCase(10, 18, 16, 8, 3)]
+    [TestCase(10, 18, 16, 1, 8)]
+    [TestCase(10, 18, 16, 8, 4)]
+    [TestCase(10, 18, 16, 2, 9)]
+    [TestCase(10, 18, 16, 9, 13)]
+    [TestCase(10, 18, 16, 8, 16)]
+    // Hard
+    [TestCase(12, 20, 20, 4, 6)]
+    [TestCase(12, 20, 20, 3, 4)]
+    [TestCase(12, 20, 20, 7, 7)]
+    [TestCase(12, 20, 20, 8, 3)]
+    [TestCase(12, 20, 20, 1, 8)]
+    [TestCase(12, 20, 20, 0, 3)]
+    [TestCase(12, 20, 20, 10, 4)]
+    [TestCase(12, 20, 20, 7, 6)]
+    [TestCase(12, 20, 20, 0, 0)]
+    [TestCase(12, 20, 20, 12, 20)]
+    public void GenerateNewGrid(int rows, int collumns, int bombsCountLevel, int clickedX, int clickedY)
+    {
+        Vector2Int clickedPos = new Vector2Int(clickedX, clickedY);
+        Gameplay.Grid result = GridFactory.CreateNewGrid(rows, collumns, bombsCountLevel, clickedPos);
+        int bombsCount = 0;
+        for (int x = 0; x < collumns; x++)
+        {
+            for (int y = 0; y < rows; y++)
             {
-                for (int y = 0; y < input.Rows; y++)
+                int targetCellValue = result.GetCellValue(x, y);
+                if (targetCellValue == GameplayConsts.BOMB_CELL_VALUE)
                 {
-                    int targetCellValue = result.GetCellValue(x, y);
-                    if (targetCellValue == GameplayConsts.BOMB_CELL_VALUE)
-                    {
-                        bombsCount++;
-                        continue;
-                    }
+                    bombsCount++;
+                    continue;
+                }
 
-                    if (targetCellValue != 0)
-                    {
-                        int bombsInNeighbour = CountBombsInNeighbour(result, new Vector2Int(x, y));
-                        if (bombsInNeighbour != targetCellValue)
-                            Assert.AreNotEqual(targetCellValue, bombsInNeighbour, "Cell value is not equal to bombs in neighbour");
-                    }
+                if (targetCellValue != 0)
+                {
+                    int bombsInNeighbour = CountBombsInNeighbour(result, new Vector2Int(x, y));
+                    if (bombsInNeighbour != targetCellValue)
+                        Assert.AreNotEqual(targetCellValue, bombsInNeighbour, "Cell value is not equal to bombs in neighbour");
                 }
             }
-
-            if (bombsCount == input.BombsCount)
-                Assert.AreEqual(input.BombsCount, bombsCount, "Bombs count are the same");
-            else
-                Assert.AreNotEqual(input.BombsCount, bombsCount, "Bombs count are not the same");
         }
+
+        for (int x = clickedX - 1; x <= clickedX + 1 && x < collumns; x++)
+        {
+            if (x < 0)
+                continue;
+
+            for (int y = clickedY - 1; y <= clickedY + 1 && y < rows; y++)
+            {
+                if (y < 0)
+                    continue;
+
+                if (result.GetCellValue(x, y) == GameplayConsts.BOMB_CELL_VALUE)
+                    Assert.Fail($"Cell ({x}, {y}) = {result.GetCellValue(x, y)}");
+            }
+        }
+
+        if (bombsCount != bombsCountLevel)
+            Assert.AreNotEqual(bombsCountLevel, bombsCount, "Bombs count are not the same");
     }
 
     private int CountBombsInNeighbour(Gameplay.Grid grid, Vector2Int pos)

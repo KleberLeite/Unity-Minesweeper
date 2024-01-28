@@ -32,6 +32,7 @@ namespace Minesweeper.Gameplay
             End
         }
 
+        private Level level;
         private Grid grid;
         private GridCell[,] cells;
 
@@ -68,9 +69,8 @@ namespace Minesweeper.Gameplay
 
         private void PrepareGame()
         {
-            Level level = (Level)levelDatabase.GetDataByID(levelPlayerPref.Get());
-            grid = GridFactory.CreateNewGrid(level.Rows, level.Collumns, level.BombsCount);
-            cells = gridSpawner.SpawnGrid(grid);
+            level = (Level)levelDatabase.GetDataByID(levelPlayerPref.Get());
+            cells = gridSpawner.SpawnGrid(level.Rows, level.Collumns);
             remainingCellsToOpenCount = level.Rows * level.Collumns - level.BombsCount;
 
             started = false;
@@ -83,6 +83,10 @@ namespace Minesweeper.Gameplay
             if (!started)
             {
                 started = true;
+
+                grid = GridFactory.CreateNewGrid(level.Rows, level.Collumns, level.BombsCount, cell.GridPos);
+                SetValuesOnCells();
+
                 startGame.Raise();
             }
 
@@ -102,6 +106,15 @@ namespace Minesweeper.Gameplay
 
             if (remainingCellsToOpenCount == 0)
                 StartCoroutine(HandleGameWinCoroutine());
+        }
+
+        private void SetValuesOnCells()
+        {
+            for (int x = 0; x < level.Collumns; x++)
+            {
+                for (int y = 0; y < level.Rows; y++)
+                    cells[x, y].SetValue(grid.GetCellValue(x, y));
+            }
         }
 
         private void OpenAllNeighboursEmpty(GridCell firstCell)

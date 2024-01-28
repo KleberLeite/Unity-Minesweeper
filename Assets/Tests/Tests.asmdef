@@ -5,7 +5,8 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "Gameplay",
-        "Consts"
+        "Consts",
+        "Databases"
     ],
     "includePlatforms": [
         "Editor"

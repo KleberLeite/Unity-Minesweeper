@@ -9,19 +9,19 @@ namespace Minesweeper.Gameplay
         [SerializeField] private GridLayoutGroup gridLayoutGroup;
         [SerializeField] private GridCell cellPrefab;
 
-        public GridCell[,] SpawnGrid(Grid grid)
+        public GridCell[,] SpawnGrid(int rows, int collumns)
         {
             RectTransform gridTransform = gridLayoutGroup.GetComponent<RectTransform>();
 
-            SetupGridLayoutGroup(grid, gridTransform);
-            return SpawnCells(grid, gridTransform);
+            SetupGridLayoutGroup(rows, collumns, gridTransform);
+            return SpawnCells(rows, collumns, gridTransform);
         }
 
-        private void SetupGridLayoutGroup(Grid grid, RectTransform gridTransform)
+        private void SetupGridLayoutGroup(int rows, int collumns, RectTransform gridTransform)
         {
-            float cellSize = GetCellSizeByGridDimensions(grid.Rows, grid.Collumns, gridTransform.rect.width, gridTransform.rect.height);
+            float cellSize = GetCellSizeByGridDimensions(rows, collumns, gridTransform.rect.width, gridTransform.rect.height);
             gridLayoutGroup.cellSize = new Vector2(cellSize, cellSize);
-            gridLayoutGroup.constraintCount = grid.Collumns;
+            gridLayoutGroup.constraintCount = collumns;
         }
 
         private float GetCellSizeByGridDimensions(int rows, int collumns, float gridWidth, float gridHeight)
@@ -32,20 +32,19 @@ namespace Minesweeper.Gameplay
             return Mathf.Min(cellSizeByWidth, cellSizeByHeight);
         }
 
-        private GridCell[,] SpawnCells(Grid grid, RectTransform gridTransform)
+        private GridCell[,] SpawnCells(int rows, int collumns, RectTransform gridTransform)
         {
-            GridCell[,] cells = new GridCell[grid.Collumns, grid.Rows];
+            GridCell[,] cells = new GridCell[collumns, rows];
 
-            for (int x = 0; x < grid.Collumns; x++)
+            for (int x = 0; x < collumns; x++)
             {
-                for (int y = 0; y < grid.Rows; y++)
+                for (int y = 0; y < rows; y++)
                 {
                     GridCell newCell = Instantiate(cellPrefab, gridTransform);
                     newCell.gameObject.name = $"--- GridCell ({x}, {y}) ---";
 
                     Vector2Int gridPos = new Vector2Int(x, y);
-                    int value = grid.GetCellValue(x, y);
-                    newCell.Init(gridPos, value);
+                    newCell.Init(gridPos);
 
                     cells[x, y] = newCell;
                 }
