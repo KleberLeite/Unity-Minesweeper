@@ -17,7 +17,7 @@ namespace Minesweeper.Gameplay
         [SerializeField] private GridSpawner gridSpawner;
         [SerializeField] private Database levelDatabase;
         [SerializeField] private IntPlayerPref levelPlayerPref;
-        [SerializeField] private float timeToReplayAfterWin;
+        [SerializeField] private float timeToRestartOnEnd;
 
         [Header("Events")]
         [SerializeField] private GridCellEvent onClickCell;
@@ -108,7 +108,7 @@ namespace Minesweeper.Gameplay
             }
 
             if (remainingCellsToOpenCount == 0)
-                StartCoroutine(HandleGameWinCoroutine());
+                HandleGameWinCoroutine();
         }
 
         private void SetValuesOnCells()
@@ -197,12 +197,18 @@ namespace Minesweeper.Gameplay
             }
 
             endGame.Raise();
+
+            StartCoroutine(RestartLevel());
         }
 
-        private IEnumerator HandleGameWinCoroutine()
+        private void HandleGameWinCoroutine()
         {
-            Debug.Log("GameController: Player wins");
-            yield return new WaitForSeconds(timeToReplayAfterWin);
+            StartCoroutine(RestartLevel());
+        }
+
+        private IEnumerator RestartLevel()
+        {
+            yield return new WaitForSeconds(timeToRestartOnEnd);
             SceneManager.LoadScene(GlobalConsts.GAMEPLAY_SCENE_INDEX);
         }
     }
