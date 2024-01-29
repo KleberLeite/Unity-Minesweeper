@@ -133,10 +133,10 @@ namespace Minesweeper.Gameplay
                 if (analysedCells.Contains(cell))
                     continue;
 
+                analysedCells.Add(cell);
+
                 if (cell.Flagged || cell.Opened)
                     continue;
-
-                analysedCells.Add(cell);
 
                 if (!cell.IsBomb)
                     cellsToOpen.Add(cell);
