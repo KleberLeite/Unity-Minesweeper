@@ -203,6 +203,7 @@ namespace Minesweeper.Gameplay
 
         private void HandleGameWinCoroutine()
         {
+            endGame.Raise();
             StartCoroutine(RestartLevel());
         }
 
