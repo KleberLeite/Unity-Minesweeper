@@ -34,7 +34,7 @@ namespace Minesweeper.Gameplay
         {
             List<Vector2Int> bombsPos = new List<Vector2Int>();
 
-            for (int i = 0; i < bombsCount; i++)
+            for (int i = 0; i < bombsCount;)
             {
                 int rngX = rng.Next(0, collumns);
                 int rngY = rng.Next(0, rows);
@@ -45,6 +45,7 @@ namespace Minesweeper.Gameplay
 
                 cellsValue[rngX, rngY] = GameplayConsts.BOMB_CELL_VALUE;
                 bombsPos.Add(rngPos);
+                i++;
             }
 
             return bombsPos;
