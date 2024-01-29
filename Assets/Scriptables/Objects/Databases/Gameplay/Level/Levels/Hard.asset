@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a13173e41df937469ec0d0669bc781a, type: 3}
   m_Name: Hard
   m_EditorClassIdentifier: 
+  id: 2
   _name: Hard
   gridDimensions: {x: 12, y: 20}
   bombsCount: 20
-  orderIndex: 2

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a13173e41df937469ec0d0669bc781a, type: 3}
   m_Name: Medium
   m_EditorClassIdentifier: 
+  id: 1
   _name: Medium
   gridDimensions: {x: 10, y: 18}
   bombsCount: 16
-  orderIndex: 1
