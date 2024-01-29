@@ -6,8 +6,9 @@ namespace Minesweeper.Databases
     {
         [Header("Data Settings")]
         [SerializeField] private object value;
+        [SerializeField, HideInInspector] private int id;
 
-        public int ID { get; set; }
+        public int ID { get => id; }
 
         public object GetValue() => value;
     }

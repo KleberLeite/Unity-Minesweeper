@@ -20,7 +20,7 @@ namespace Minesweeper.Editor
 
         private void OnGUI()
         {
-            if (!targetField.value)
+            if (!targetField?.value)
                 return;
 
             Database target = (Database)targetField.value;
@@ -45,7 +45,12 @@ namespace Minesweeper.Editor
         {
             Data[] datas = target.GetAll();
             for (int i = 0; i < datas.Length; i++)
-                datas[i].ID = i;
+            {
+                SerializedObject dataSO = new SerializedObject(datas[i]);
+                SerializedProperty dataSP = dataSO.FindProperty("id");
+                dataSP.intValue = i;
+                dataSO.ApplyModifiedProperties();
+            }
         }
     }
 }
