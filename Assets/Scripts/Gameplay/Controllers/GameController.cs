@@ -155,12 +155,12 @@ namespace Minesweeper.Gameplay
         private List<GridCell> GetNeighbours(Vector2Int targetPos)
         {
             List<GridCell> neighbours = new List<GridCell>();
-            for (int x = targetPos.x - 1; x < grid.Collumns; x++)
+            for (int x = targetPos.x - 1; x <= targetPos.x + 1 && x < level.Collumns; x++)
             {
                 if (x < 0)
                     continue;
 
-                for (int y = targetPos.y - 1; y < grid.Rows; y++)
+                for (int y = targetPos.y - 1; y <= targetPos.y + 1 && y < level.Rows; y++)
                 {
                     if (y < 0)
                         continue;
