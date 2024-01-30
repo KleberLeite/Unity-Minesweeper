@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   _name: Hard
-  gridDimensions: {x: 12, y: 20}
-  bombsCount: 20
+  gridDimensions: {x: 14, y: 26}
+  bombsCount: 75

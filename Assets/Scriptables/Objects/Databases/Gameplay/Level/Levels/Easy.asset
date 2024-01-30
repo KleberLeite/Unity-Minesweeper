@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a13173e41df937469ec0d0669bc781a, type: 3}
   m_Name: Easy
   m_EditorClassIdentifier: 
+  id: 0
   _name: Easy
-  gridDimensions: {x: 8, y: 16}
-  bombsCount: 12
+  gridDimensions: {x: 6, y: 12}
+  bombsCount: 10

@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   _name: Medium
-  gridDimensions: {x: 10, y: 18}
-  bombsCount: 16
+  gridDimensions: {x: 10, y: 19}
+  bombsCount: 35
