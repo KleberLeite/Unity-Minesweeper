@@ -31,6 +31,7 @@ namespace Minesweeper.Gameplay
 
         private bool pressing;
         private float pressedTime;
+        private bool ignoreLeftUp;
 
         public void Init(Vector2Int gridPos)
         {
@@ -62,16 +63,23 @@ namespace Minesweeper.Gameplay
 
         private void Update()
         {
-            if (pressing)
-                pressedTime += Time.deltaTime;
+            if (!pressing || ignoreLeftUp)
+                return;
+
+            pressedTime += Time.deltaTime;
+            if (pressedTime >= GameplayConsts.TIME_PRESSING_TO_ADD_FLAG)
+            {
+                ignoreLeftUp = true;
+                onRequestSwitchFlagState.Raise(this);
+            }
         }
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            if (pressing)
+            if (Opened || pressing)
                 return;
 
-            if (eventData.button == PointerEventData.InputButton.Right && !Opened)
+            if (eventData.button == PointerEventData.InputButton.Right)
             {
                 onRequestSwitchFlagState.Raise(this);
                 return;
@@ -83,15 +91,17 @@ namespace Minesweeper.Gameplay
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            if (eventData.button != PointerEventData.InputButton.Left || !pressing)
+            if (eventData.button != PointerEventData.InputButton.Left)
                 return;
 
             pressing = false;
+            if (ignoreLeftUp)
+            {
+                ignoreLeftUp = false;
+                return;
+            }
 
-            if (pressedTime >= GameplayConsts.TIME_PRESSING_TO_ADD_FLAG && !Opened)
-                onRequestSwitchFlagState.Raise(this);
-            else if (!Flagged && !Opened)
-                onClick.Raise(this);
+            onClick.Raise(this);
         }
 
         public void SwitchFlagState()
