@@ -37,6 +37,7 @@ namespace Minesweeper.Gameplay
         private GridCell[,] cells;
 
         private bool started;
+        private bool ended;
         private bool firstClick;
 
         private int remainingCellsToOpenCount;
@@ -82,6 +83,9 @@ namespace Minesweeper.Gameplay
 
         private void OnClickCell(GridCell cell)
         {
+            if (ended)
+                return;
+
             if (firstClick)
             {
                 started = true;
@@ -178,6 +182,9 @@ namespace Minesweeper.Gameplay
 
         private void OnRequestSwitchFlagState(GridCell cell)
         {
+            if (ended)
+                return;
+
             if (!started)
             {
                 started = true;
@@ -189,6 +196,8 @@ namespace Minesweeper.Gameplay
 
         private void HandleGameOver(GridCell cell)
         {
+            ended = true;
+
             cell.Open();
             for (int i = 0; i < grid.BombsPos.Length; i++)
             {
@@ -203,6 +212,7 @@ namespace Minesweeper.Gameplay
 
         private void HandleGameWinCoroutine()
         {
+            ended = true;
             endGame.Raise();
             StartCoroutine(RestartLevel());
         }
