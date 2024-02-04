@@ -28,7 +28,7 @@ namespace Minesweeper.Gameplay
             onRequestSwitchFlagState.OnEvent -= OnRequestSwitchFlagState;
         }
 
-        private void Awake()
+        private void Start()
         {
             Level level = (Level)levelsDatabase.GetDataByID(levelPlayerPref.Get());
             current = level.BombsCount;
