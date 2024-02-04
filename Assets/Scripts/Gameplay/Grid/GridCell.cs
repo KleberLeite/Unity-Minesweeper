@@ -2,9 +2,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Minesweeper.Databases;
-using Minesweeper.Gameplay.Events;
 using Minesweeper.Consts;
 using Minesweeper.PlayerPrefs;
+using UnityEngine.Events;
 
 namespace Minesweeper.Gameplay
 {
@@ -18,20 +18,21 @@ namespace Minesweeper.Gameplay
         [SerializeField] private Database artDatabase;
         [SerializeField] private IntPlayerPref artIDPlayerPref;
 
-        [Header("Events")]
-        [SerializeField] private GridCellEvent onClick;
-        [SerializeField] private GridCellEvent onRequestSwitchFlagState;
-
         public bool Flagged { get; private set; }
         public bool Opened { get; private set; }
         public Vector2Int GridPos { get; private set; }
         public int Value { get; private set; }
         public bool IsBomb => Value == GameplayConsts.BOMB_CELL_VALUE;
         public bool IsEmpty => Value == GameplayConsts.EMPTY_CELL_VALUE;
+        public UnityAction<GridCell, PointerEventData> OnDown { get; set; }
+        public UnityAction<GridCell, PointerEventData> OnUp { get; set; }
 
-        private bool pressing;
-        private float pressedTime;
-        private bool ignoreLeftUp;
+        public RectTransform RectTransform { get; private set; }
+
+        private void Awake()
+        {
+            RectTransform = GetComponent<RectTransform>();
+        }
 
         public void Init(Vector2Int gridPos)
         {
@@ -61,47 +62,20 @@ namespace Minesweeper.Gameplay
             contentImg.sprite = theme.GetContentSprite(value);
         }
 
-        private void Update()
-        {
-            if (!pressing || ignoreLeftUp)
-                return;
-
-            pressedTime += Time.deltaTime;
-            if (pressedTime >= GameplayConsts.TIME_PRESSING_TO_ADD_FLAG)
-            {
-                ignoreLeftUp = true;
-                onRequestSwitchFlagState.Raise(this);
-            }
-        }
-
         public void OnPointerDown(PointerEventData eventData)
         {
-            if (Opened || pressing)
+            if (eventData.button == PointerEventData.InputButton.Middle)
                 return;
 
-            if (eventData.button == PointerEventData.InputButton.Right)
-            {
-                onRequestSwitchFlagState.Raise(this);
-                return;
-            }
-
-            pressedTime = 0;
-            pressing = true;
+            OnDown?.Invoke(this, eventData);
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            if (eventData.button != PointerEventData.InputButton.Left)
+            if (eventData.button == PointerEventData.InputButton.Middle)
                 return;
 
-            pressing = false;
-            if (ignoreLeftUp)
-            {
-                ignoreLeftUp = false;
-                return;
-            }
-
-            onClick.Raise(this);
+            OnUp?.Invoke(this, eventData);
         }
 
         public void SwitchFlagState()

@@ -18,9 +18,9 @@ namespace Minesweeper.Gameplay
         [SerializeField] private Database levelDatabase;
         [SerializeField] private IntPlayerPref levelPlayerPref;
         [SerializeField] private float timeToRestartOnEnd;
+        [SerializeField] private PlayerController player;
 
         [Header("Events")]
-        [SerializeField] private GridCellEvent onClickCell;
         [SerializeField] private GridCellEvent onRequestSwitchFlagState;
         [SerializeField] private VoidEvent startGame;
         [SerializeField] private VoidEvent endGame;
@@ -41,18 +41,6 @@ namespace Minesweeper.Gameplay
         private bool firstClick;
 
         private int remainingCellsToOpenCount;
-
-        private void OnEnable()
-        {
-            onClickCell.OnEvent += OnClickCell;
-            onRequestSwitchFlagState.OnEvent += OnRequestSwitchFlagState;
-        }
-
-        private void OnDisable()
-        {
-            onClickCell.OnEvent -= OnClickCell;
-            onRequestSwitchFlagState.OnEvent -= OnRequestSwitchFlagState;
-        }
 
         private void Start()
         {
@@ -75,6 +63,14 @@ namespace Minesweeper.Gameplay
             cells = gridSpawner.SpawnGrid(level.Rows, level.Collumns);
             remainingCellsToOpenCount = level.Rows * level.Collumns - level.BombsCount;
 
+            foreach (GridCell cell in cells)
+            {
+                cell.OnDown += player.OnDown;
+                cell.OnUp += player.OnUp;
+            }
+            player.RequestOpen += OnClickCell;
+            player.RequestSwitchFlagState += OnRequestSwitchFlagState;
+
             started = false;
             firstClick = true;
 
@@ -96,6 +92,9 @@ namespace Minesweeper.Gameplay
 
                 startGame.Raise();
             }
+
+            if (cell.Flagged)
+                return;
 
             if (cell.IsBomb)
             {
@@ -191,6 +190,7 @@ namespace Minesweeper.Gameplay
                 startGame.Raise();
             }
 
+            onRequestSwitchFlagState.Raise(cell);
             cell.SwitchFlagState();
         }
 
