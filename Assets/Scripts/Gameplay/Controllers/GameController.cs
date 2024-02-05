@@ -29,7 +29,8 @@ namespace Minesweeper.Gameplay
         [Header("Events")]
         [SerializeField] private GridCellEvent onRequestSwitchFlagState;
         [SerializeField] private VoidEvent startGame;
-        [SerializeField] private BoolEvent endGame;
+        [SerializeField] private VoidEvent endGame;
+        [SerializeField] private BoolEvent showGameResult;
 
         private enum GameState
         {
@@ -204,7 +205,7 @@ namespace Minesweeper.Gameplay
         private void HandleGameOver(GridCell cell)
         {
             ended = true;
-            player.StopAll();
+            endGame.Raise();
 
             StartCoroutine(HandleGameOverCoroutine(cell));
         }
@@ -223,18 +224,18 @@ namespace Minesweeper.Gameplay
 
             yield return new WaitForSeconds(timeToShowGameEnd);
 
-            endGame.Raise(false);
+            showGameResult.Raise(false);
         }
 
         private void HandleGameWin()
         {
             ended = true;
-            player.StopAll();
+            endGame.Raise();
 
             if (timer.Current < recordLevel.Get(level.ID) || recordLevel.Get(level.ID) == GameplayConsts.WITHOUT_RECORD)
                 recordLevel.Set((int)timer.Current, level.ID);
 
-            endGame.Raise(true);
+            showGameResult.Raise(true);
         }
     }
 }

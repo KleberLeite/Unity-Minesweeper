@@ -14,7 +14,6 @@ namespace Minesweeper.Gameplay
         private ActionSelector selector;
         private GridCell selectedCell;
         private List<PressData> clicks = new List<PressData>();
-        private bool readingInputs = true;
 
         private class PressData
         {
@@ -30,11 +29,11 @@ namespace Minesweeper.Gameplay
             }
         }
 
-        public override void StopAll()
+        protected override void StopReadInputs()
         {
             clicks.Clear();
             CloseSelector();
-            readingInputs = false;
+            base.StopReadInputs();
         }
 
         private void Awake()

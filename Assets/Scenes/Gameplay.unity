@@ -178,7 +178,8 @@ MonoBehaviour:
   timer: {fileID: 1545979288}
   onRequestSwitchFlagState: {fileID: 11400000, guid: 33e7008a5e49df34d919aa4b784f8a4d, type: 2}
   startGame: {fileID: 11400000, guid: 8db8cccae35c98443be91e14097d2eec, type: 2}
-  endGame: {fileID: 11400000, guid: bde0f3e634a2d2e4dab40ccf86cf5c4a, type: 2}
+  endGame: {fileID: 11400000, guid: d9112dba1646ee441afd34616542db32, type: 2}
+  showGameResult: {fileID: 11400000, guid: bde0f3e634a2d2e4dab40ccf86cf5c4a, type: 2}
 --- !u!1 &13708970
 GameObject:
   m_ObjectHideFlags: 0
@@ -408,6 +409,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af8b4771412b0e746b86c807e6737367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onEndGame: {fileID: 11400000, guid: d9112dba1646ee441afd34616542db32, type: 2}
   selectorView: {fileID: 1989934842}
 --- !u!1 &112724184
 GameObject:
@@ -2919,7 +2921,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onGameStart: {fileID: 11400000, guid: 8db8cccae35c98443be91e14097d2eec, type: 2}
-  onGameEnd: {fileID: 11400000, guid: bde0f3e634a2d2e4dab40ccf86cf5c4a, type: 2}
+  onGameEnd: {fileID: 11400000, guid: d9112dba1646ee441afd34616542db32, type: 2}
 --- !u!1 &1568530106
 GameObject:
   m_ObjectHideFlags: 0
@@ -3533,9 +3535,9 @@ MonoBehaviour:
   bestText: {fileID: 1688374223}
   currentLevel: {fileID: 11400000, guid: c3c410c1ad2d8ae4b8dafc6e3cf597a1, type: 2}
   bestTimePP: {fileID: 11400000, guid: 63900fc3564b8a74bb110935ab75a1ce, type: 2}
-  onEnd: {fileID: 11400000, guid: bde0f3e634a2d2e4dab40ccf86cf5c4a, type: 2}
   resultText: {fileID: 305509147}
   playAgainBtn: {fileID: 892043848}
+  onGameResult: {fileID: 11400000, guid: bde0f3e634a2d2e4dab40ccf86cf5c4a, type: 2}
   timer: {fileID: 1545979288}
 --- !u!1 &1876816589
 GameObject:

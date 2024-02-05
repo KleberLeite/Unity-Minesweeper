@@ -17,21 +17,23 @@ namespace Minesweeper.Gameplay
         [SerializeField] private TMP_Text bestText;
         [SerializeField] private LevelValue currentLevel;
         [SerializeField] private DynamicIntPlayerPref bestTimePP;
-        [SerializeField] private BoolEvent onEnd;
         [SerializeField] private TMP_Text resultText;
         [SerializeField] private Button playAgainBtn;
+
+        [Header("Events")]
+        [SerializeField] private BoolEvent onGameResult;
 
         [Header("Dependencies")]
         [SerializeField] private Timer timer;
 
         private void OnEnable()
         {
-            onEnd.OnEvent += OnEnd;
+            onGameResult.OnEvent += OnEnd;
         }
 
         private void OnDisable()
         {
-            onEnd.OnEvent -= OnEnd;
+            onGameResult.OnEvent -= OnEnd;
         }
 
         private void Awake()
