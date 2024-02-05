@@ -217,7 +217,7 @@ namespace Minesweeper.Gameplay
                 if (grid.BombsPos[i] != cell.GridPos)
                 {
                     yield return new WaitForSeconds(timeBetweenExplosions);
-                    cells[grid.BombsPos[i].x, grid.BombsPos[i].y].Open();
+                    cells[grid.BombsPos[i].x, grid.BombsPos[i].y].Show();
                 }
             }
 

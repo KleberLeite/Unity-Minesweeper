@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3186986483476082476}
   - component: {fileID: 365143023353355455}
   - component: {fileID: 6372342681439610502}
+  - component: {fileID: 169265110963825037}
   m_Layer: 5
   m_Name: Block
   m_TagString: Untagged
@@ -76,6 +77,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &169265110963825037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1565704165752156232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &2070423766726591431
 GameObject:
   m_ObjectHideFlags: 0
@@ -303,7 +319,6 @@ MonoBehaviour:
   flagImg: {fileID: 312417753452711580}
   artDatabase: {fileID: 11400000, guid: 0e46097150b256442bcfbc38df529614, type: 2}
   artIDPlayerPref: {fileID: 11400000, guid: 3773f37fb1db6894b96650ad0588754e, type: 2}
-  selectedHighlight: {fileID: 0}
 --- !u!1 &9001828042794479518
 GameObject:
   m_ObjectHideFlags: 0

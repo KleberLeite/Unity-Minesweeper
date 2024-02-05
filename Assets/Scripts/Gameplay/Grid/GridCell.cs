@@ -29,14 +29,17 @@ namespace Minesweeper.Gameplay
 
         public RectTransform RectTransform { get; private set; }
 
+        private Transform dropHolder;
+
         private void Awake()
         {
             RectTransform = GetComponent<RectTransform>();
         }
 
-        public void Init(Vector2Int gridPos)
+        public void Init(Vector2Int gridPos, Transform dropHolder)
         {
             GridPos = gridPos;
+            this.dropHolder = dropHolder;
 
             SetupArt(gridPos);
         }
@@ -88,6 +91,18 @@ namespace Minesweeper.Gameplay
         {
             blockImg.gameObject.SetActive(false);
             Opened = true;
+        }
+
+        public void Show()
+        {
+            DropEffect drop = blockImg.gameObject.AddComponent<DropEffect>();
+            bool goToRight = Random.Range(0, 2) == 0;
+            drop.Init(dropHolder, goToRight);
+            if (Flagged)
+            {
+                drop = flagImg.gameObject.AddComponent<DropEffect>();
+                drop.Init(dropHolder, !goToRight);
+            }
         }
     }
 }

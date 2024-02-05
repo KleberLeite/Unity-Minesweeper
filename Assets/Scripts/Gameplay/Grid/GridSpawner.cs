@@ -8,6 +8,7 @@ namespace Minesweeper.Gameplay
         [Header("Settings")]
         [SerializeField] private GridLayoutGroup gridLayoutGroup;
         [SerializeField] private GridCell cellPrefab;
+        [SerializeField] private Transform dropHolder;
 
         public GridCell[,] SpawnGrid(int rows, int collumns)
         {
@@ -44,7 +45,7 @@ namespace Minesweeper.Gameplay
                     newCell.gameObject.name = $"--- GridCell ({x}, {y}) ---";
 
                     Vector2Int gridPos = new Vector2Int(x, y);
-                    newCell.Init(gridPos);
+                    newCell.Init(gridPos, dropHolder);
 
                     cells[x, y] = newCell;
                 }
