@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Minesweeper.Consts;
 
 namespace Minesweeper.Gameplay
 {
@@ -12,37 +13,54 @@ namespace Minesweeper.Gameplay
             rng = new System.Random();
         }
 
-        public static Grid CreateNewGrid(int rows, int collumns, int bombsCount)
+        public static Grid CreateNewGrid(int rows, int collumns, int bombsCount, Vector2Int clickedPos)
         {
             int[,] cellsValue = new int[collumns, rows];
-            List<Vector2Int> bombsPos = InsertBombsInRandomPositions(ref cellsValue, rows, collumns, bombsCount);
+            List<Vector2Int> bombsPos = InsertBombs(ref cellsValue, rows, collumns, bombsCount, clickedPos);
             IncrementValueInNeighboursBombCells(ref cellsValue, rows, collumns, bombsPos);
 
-            return new Grid(rows, collumns, cellsValue);
+            return new Grid(rows, collumns, cellsValue, bombsPos.ToArray());
         }
 
-        private static List<Vector2Int> InsertBombsInRandomPositions(
+        /// <summary>
+        /// Insere bombas em posições aleatórias exceto no 3x3 com centro em "clickedPos".
+        /// </summary>
+        private static List<Vector2Int> InsertBombs(
             ref int[,] cellsValue,
             int rows,
             int collumns,
-            int bombsCount)
+            int bombsCount,
+            Vector2Int clickedPos)
         {
             List<Vector2Int> bombsPos = new List<Vector2Int>();
 
-            for (int i = 0; i < bombsCount; i++)
+            for (int i = 0; i < bombsCount;)
             {
                 int rngX = rng.Next(0, collumns);
                 int rngY = rng.Next(0, rows);
 
                 Vector2Int rngPos = new Vector2Int(rngX, rngY);
-                if (bombsPos.Contains(rngPos))
+                if (bombsPos.Contains(rngPos) || !CanSetBomb(rngPos, clickedPos))
                     continue;
 
                 cellsValue[rngX, rngY] = GameplayConsts.BOMB_CELL_VALUE;
                 bombsPos.Add(rngPos);
+                i++;
             }
 
             return bombsPos;
+        }
+
+        /// <summary>
+        /// Retorna se pode colocar uma bomba na posição, retornando falso caso esteja
+        /// no 3x3 com centro em "clickedPos", caso contrário, retorna positivo.
+        /// </summary>
+        private static bool CanSetBomb(Vector2Int bombPos, Vector2Int clickedPos)
+        {
+            bool inHorizontalSpace = bombPos.x >= clickedPos.x - 1 && bombPos.x <= clickedPos.x + 1;
+            bool inVerticalSpace = bombPos.y >= clickedPos.y - 1 && bombPos.y <= clickedPos.y + 1;
+
+            return !(inHorizontalSpace && inVerticalSpace);
         }
 
         private static void IncrementValueInNeighboursBombCells(
