@@ -18,7 +18,7 @@ namespace Minesweeper.Gameplay
 
         private void Update()
         {
-            timeText.text = timer.Current.ToString("000");
+            timeText.text = ((int)timer.Current).ToString("000");
         }
 
         private void UpdateFlagText(int flagsCount) => flagText.text = flagsCount.ToString();

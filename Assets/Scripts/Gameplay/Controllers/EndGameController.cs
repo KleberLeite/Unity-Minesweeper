@@ -43,7 +43,7 @@ namespace Minesweeper.Gameplay
         {
             resultText.text = win ? "Victory" : "Defeat";
 
-            currentText.text = timer.Current.ToString("000");
+            currentText.text = ((int)timer.Current).ToString("000");
             int bestTime = bestTimePP.Get(currentLevel.Level.ID);
             bestText.text = bestTime == GameplayConsts.WITHOUT_RECORD ? "_ _ _" : bestTime.ToString("000");
 
