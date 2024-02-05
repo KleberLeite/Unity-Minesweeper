@@ -6,8 +6,8 @@ using Minesweeper.Gameplay.Events;
 using Minesweeper.PlayerPrefs;
 using Minesweeper.Consts;
 using UnityEngine;
+using Minesweeper.Values;
 using System.Collections;
-using UnityEngine.SceneManagement;
 
 namespace Minesweeper.Gameplay
 {
@@ -17,13 +17,19 @@ namespace Minesweeper.Gameplay
         [SerializeField] private GridSpawner gridSpawner;
         [SerializeField] private Database levelDatabase;
         [SerializeField] private IntPlayerPref levelPlayerPref;
-        [SerializeField] private float timeToRestartOnEnd;
         [SerializeField] private PlayerController player;
+        [SerializeField] private LevelValue currentLevel;
+        [SerializeField] private DynamicIntPlayerPref recordLevel;
+        [SerializeField] private float timeBetweenExplosions;
+        [SerializeField] private float timeToShowGameEnd;
+
+        [Header("Dependencies")]
+        [SerializeField] private Timer timer;
 
         [Header("Events")]
         [SerializeField] private GridCellEvent onRequestSwitchFlagState;
         [SerializeField] private VoidEvent startGame;
-        [SerializeField] private VoidEvent endGame;
+        [SerializeField] private BoolEvent endGame;
 
         private enum GameState
         {
@@ -60,6 +66,7 @@ namespace Minesweeper.Gameplay
         private void PrepareGame()
         {
             level = (Level)levelDatabase.GetDataByID(levelPlayerPref.Get());
+            currentLevel.Level = level;
             cells = gridSpawner.SpawnGrid(level.Rows, level.Collumns);
             remainingCellsToOpenCount = level.Rows * level.Collumns - level.BombsCount;
 
@@ -111,7 +118,7 @@ namespace Minesweeper.Gameplay
             }
 
             if (remainingCellsToOpenCount == 0)
-                HandleGameWinCoroutine();
+                HandleGameWin();
         }
 
         private void SetValuesOnCells()
@@ -198,29 +205,34 @@ namespace Minesweeper.Gameplay
         {
             ended = true;
 
+            StartCoroutine(HandleGameOverCoroutine(cell));
+        }
+
+        private IEnumerator HandleGameOverCoroutine(GridCell cell)
+        {
             cell.Open();
             for (int i = 0; i < grid.BombsPos.Length; i++)
             {
                 if (grid.BombsPos[i] != cell.GridPos)
+                {
+                    yield return new WaitForSeconds(timeBetweenExplosions);
                     cells[grid.BombsPos[i].x, grid.BombsPos[i].y].Open();
+                }
             }
 
-            endGame.Raise();
+            yield return new WaitForSeconds(timeToShowGameEnd);
 
-            StartCoroutine(RestartLevel());
+            endGame.Raise(false);
         }
 
-        private void HandleGameWinCoroutine()
+        private void HandleGameWin()
         {
             ended = true;
-            endGame.Raise();
-            StartCoroutine(RestartLevel());
-        }
 
-        private IEnumerator RestartLevel()
-        {
-            yield return new WaitForSeconds(timeToRestartOnEnd);
-            SceneManager.LoadScene(GlobalConsts.GAMEPLAY_SCENE_INDEX);
+            if (timer.Current < recordLevel.Get(level.ID) || recordLevel.Get(level.ID) == GameplayConsts.WITHOUT_RECORD)
+                recordLevel.Set((int)timer.Current, level.ID);
+
+            endGame.Raise(true);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Minesweeper.Gameplay
     {
         [Header("Events")]
         [SerializeField] private VoidEvent onGameStart;
-        [SerializeField] private VoidEvent onGameEnd;
+        [SerializeField] private BoolEvent onGameEnd;
 
         public float Current { get; private set; }
 
@@ -37,7 +37,7 @@ namespace Minesweeper.Gameplay
             started = true;
         }
 
-        private void OnGameEnd()
+        private void OnGameEnd(bool win)
         {
             stop = true;
         }
