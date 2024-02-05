@@ -204,6 +204,7 @@ namespace Minesweeper.Gameplay
         private void HandleGameOver(GridCell cell)
         {
             ended = true;
+            player.StopAll();
 
             StartCoroutine(HandleGameOverCoroutine(cell));
         }
@@ -228,6 +229,7 @@ namespace Minesweeper.Gameplay
         private void HandleGameWin()
         {
             ended = true;
+            player.StopAll();
 
             if (timer.Current < recordLevel.Get(level.ID) || recordLevel.Get(level.ID) == GameplayConsts.WITHOUT_RECORD)
                 recordLevel.Set((int)timer.Current, level.ID);

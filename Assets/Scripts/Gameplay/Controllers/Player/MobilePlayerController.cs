@@ -14,6 +14,7 @@ namespace Minesweeper.Gameplay
         private ActionSelector selector;
         private GridCell selectedCell;
         private List<PressData> clicks = new List<PressData>();
+        private bool readingInputs = true;
 
         private class PressData
         {
@@ -27,6 +28,13 @@ namespace Minesweeper.Gameplay
                 TimeSpan = timeSpan;
                 Pressing = true;
             }
+        }
+
+        public override void StopAll()
+        {
+            clicks.Clear();
+            CloseSelector();
+            readingInputs = false;
         }
 
         private void Awake()
@@ -44,6 +52,9 @@ namespace Minesweeper.Gameplay
 
         private void Update()
         {
+            if (!readingInputs)
+                return;
+
             for (int i = 0; i < clicks.Count; i++)
             {
                 PressData data = clicks[i];
@@ -77,6 +88,9 @@ namespace Minesweeper.Gameplay
 
         public override void OnDown(GridCell cell, PointerEventData eventData)
         {
+            if (!readingInputs)
+                return;
+
             if (eventData.button != PointerEventData.InputButton.Left)
                 return;
 
@@ -122,6 +136,9 @@ namespace Minesweeper.Gameplay
 
         public override void OnUp(GridCell cell, PointerEventData eventData)
         {
+            if (!readingInputs)
+                return;
+
             if (eventData.button != PointerEventData.InputButton.Left)
                 return;
 

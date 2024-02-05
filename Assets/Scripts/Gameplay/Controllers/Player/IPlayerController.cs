@@ -10,5 +10,6 @@ namespace Minesweeper.Gameplay
 
         void OnDown(GridCell cell, PointerEventData eventData);
         void OnUp(GridCell cell, PointerEventData eventData);
+        void StopAll();
     }
 }
