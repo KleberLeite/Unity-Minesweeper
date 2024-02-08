@@ -15,6 +15,8 @@ namespace Minesweeper.Gameplay
         private GridCell selectedCell;
         private List<PressData> clicks = new List<PressData>();
 
+        private bool firstClick = true;
+
         private class PressData
         {
             public int PointerID { get; }
@@ -92,6 +94,13 @@ namespace Minesweeper.Gameplay
 
             if (eventData.button != PointerEventData.InputButton.Left)
                 return;
+
+            if (firstClick)
+            {
+                firstClick = false;
+                RequestOpen?.Invoke(cell);
+                return;
+            }
 
             if (selectedCell == null || cell != selectedCell)
             {
